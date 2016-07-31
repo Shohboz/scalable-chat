@@ -9,10 +9,10 @@ let RedisStore = require('connect-redis')(session);
 let util = require('./middleware/utilities')
 let bodyParser = require('body-parser');
 let csrf = require('csurf');
-
+let flash = require('connect-flash');
 let config = require('./config');
 let io = require('./socket.io');
-
+let passport = require('./passport');
 let routes = require('./routes');
 
 app.set('views', path.join(__dirname, 'views'));
@@ -31,6 +31,9 @@ app.use(session({
     })
 }));
 
+app.use(passport.passport.initialize());
+app.use(passport.passport.session());
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: false
@@ -38,11 +41,21 @@ app.use(bodyParser.urlencoded({
 
 app.use(csrf());
 app.use(util.csrf);
+app.use(util.authenticated);
+app.use(flash());
+app.use(util.templateRoutes);
 
 app.get('/error', (req, res, next) => {
   next(new Error('A contrived error.'));
 });
 app.get('/', routes.index);
+app.get(config.routes.login, routes.login);
+app.get(config.routes.logout, routes.logOut);
+app.get(config.routes.chat, [util.requireAuthentication], routes.chat);
+app.get(config.routes.register, routes.register);
+app.post(config.routes.register, routes.registerProcess);
+
+passport.routes(app);
 
 let server = app.listen(config.port);
 io.start(server);
