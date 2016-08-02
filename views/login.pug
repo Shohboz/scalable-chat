@@ -1,0 +1,27 @@
+extends layout
+
+block content
+  .row
+    .col-sm-8.col-sm-offset-2
+      .row
+        .col-sm-12
+          form(method="post")
+            if (message.length)
+              .alert.alert-danger= message
+            input(type="hidden", name="_csrf", value=token)
+            .form-group
+              label(for="username") Username
+              input(type="text", class="form-control", id="username", placeholder="username", name="username")
+            .form-group
+              label(for="password") Password
+              input(type="password", class="form-control", id="password", placeholder="password", name="password")
+            button.btn.btn-primary.btn-block Login
+      .row.top-margin
+        .col-sm-6
+          a(href= routes.facebookAuth).btn.btn-block.facebook
+            i.fa.fa-facebook
+            | Facebook
+        .col-sm-6
+          a(href= routes.googleAuth).btn.btn-block.google
+            i.fa.fa-google-plus
+            | Google

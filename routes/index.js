@@ -1,6 +1,8 @@
 'use strict';
 
 let config = require('../config');
+let user = require('../passport/user');
+let util = require('../middleware/utilities');
 
 module.exports = {
   index: (req, res) => {

@@ -7,5 +7,11 @@ html
       .row
         .col-sm-4
           h1 Chat
+        .col-sm-4.col-sm-offset-4.top-margin
+          .pull-right
+            if (isAuthenticated)
+              include ./partials/user-loggedin.pug
+            else
+              include ./partials/user-loggedout.pug
       .row
         block content

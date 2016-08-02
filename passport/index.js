@@ -64,7 +64,7 @@ let routes = (app) => {
     failureFlash: true
   }));
   app.get(config.routes.googleAuth, passport.authenticate('google', {
-    scope: ['https://www.googleapis.com/auth/userinfo.profile','https://www.googleapis.com/auth/userinfo.email']
+    scope: ['https://www.googleapis.com/auth/userinfo.profile', 'https://www.googleapis.com/auth/userinfo.email']
   }));
   app.get(config.routes.googleAuthCallback, passport.authenticate('google', {
     successRedirect: config.routes.chat,
