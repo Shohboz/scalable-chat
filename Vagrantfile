@@ -24,6 +24,8 @@ Vagrant.configure(2) do |config|
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 3000, host: 3000
 
+  config.vm.network "forwarded_port", guest: 15672, host: 15672
+
   # Create a private network, which allows host-only access to the machine
   # using a specific IP.
   # config.vm.network "private_network", ip: "192.168.33.10"
@@ -77,9 +79,12 @@ Vagrant.configure(2) do |config|
       wget -O- https://www.rabbitmq.com/rabbitmq-release-signing-key.asc |
         sudo apt-key add -
 
-      sudo apt-get update
+      sudo apt-get --yes --force-yes update
 
-      sudo apt-get install rabbitmq-server
+      sudo apt-get --yes --force-yes install rabbitmq-server
+      sudo rabbitmq-plugins enable rabbitmq_management
+      sudo echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config
+      sudo service rabbitmq-server restart
 
       echo "Installing dependancies..."
         apt-get install -y nodejs build-essential redis-server < /dev/null

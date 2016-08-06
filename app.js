@@ -6,7 +6,9 @@ let app = new express();
 let cookieParser = require('cookie-parser');
 let session = require('express-session');
 let RedisStore = require('connect-redis')(session);
-let util = require('./middleware/utilities')
+let util = require('./middleware/utilities');
+let errorHandlers = require('./middleware/errorhandlers');
+let log = require('./middleware/log');
 let bodyParser = require('body-parser');
 let csrf = require('csurf');
 let flash = require('connect-flash');
@@ -18,6 +20,7 @@ let routes = require('./routes');
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
+app.use(log.logger);
 app.use(express.static(__dirname + '/static'));
 app.use(cookieParser(config.secret));
 
@@ -56,6 +59,9 @@ app.get(config.routes.register, routes.register);
 app.post(config.routes.register, routes.registerProcess);
 
 passport.routes(app);
+
+app.use(errorHandlers.error);
+app.use(errorHandlers.notFound);
 
 let server = app.listen(config.port);
 io.start(server);

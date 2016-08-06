@@ -7,7 +7,7 @@ let google = require('passport-google-oauth').OAuth2Strategy;
 let passwordUtils = require('./password');
 let user = require('./user');
 let config = require('../config');
-// let log = require('../middleware/log');
+let log = require('../middleware/log');
 
 passport.use(new google({
   clientID: config.google.clientID,
@@ -41,7 +41,7 @@ passport.use(new local((username, password, done) => {
         }
       });
     } else {
-      // log.debug({message: 'Wrong Username or Password', username: username});
+      log.debug({message: 'Wrong Username or Password', username: username});
       done(null, false, {
         message: 'Wrong Username or Password'
       });

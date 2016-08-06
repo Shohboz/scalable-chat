@@ -25,5 +25,12 @@ module.exports = {
     workFactor: 5000,
     keylen: 32,
     randomSize: 256
+  },
+  rabbitMQ: {
+    URL: process.env.RABBITMQ_URL,
+    exchange: process.env.RABBITMQ_EXCHANGE
+  },
+  logger: {
+    path: process.env.LOG_PATH
   }
 };
