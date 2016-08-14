@@ -7,7 +7,7 @@ block content
         .col-sm-12
           form(method="post")
             if (message.length)
-              .alert.alert-danger= message
+              .alert.alert-danger=message
             input(type="hidden", name="_csrf", value=token)
             .form-group
               label(for="username") Username

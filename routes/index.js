@@ -42,7 +42,7 @@ module.exports = {
         }
       });
     } else {
-      req.flash('error', 'Заполните все поля');
+      req.flash('error', 'Fill all fields');
       res.redirect(config.routes.register);
     }
   }

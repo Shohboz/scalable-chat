@@ -12,11 +12,11 @@ let Users = {
     provider: 'local',
     username: 'josh'
   }
-}
+};
 
 module.exports.findByUsername = (username, cb) => {
   cb(null, Users[username]);
-}
+};
 
 module.exports.addUser = (username, password, work, cb) => {
   if (Users[username] === undefined){
@@ -34,12 +34,9 @@ module.exports.addUser = (username, password, work, cb) => {
       return cb(null, Users[username]);
     })
   } else {
-    return cb({
-      errorCode: 1,
-      message: 'User exists'
-    }, null);
+    return cb('User exists', null);
   }
-}
+};
 
 module.exports.updatePassword = (username, password, work) => {
   passUtil.passwordCreate(password, (err, salt, password) => {
@@ -47,4 +44,4 @@ module.exports.updatePassword = (username, password, work) => {
     Users[username].password = password;
     Users[username].work = work;
   });
-}
+};

@@ -12,11 +12,11 @@ module.exports.passwordCreate = (password, cb) => {
     crypto.pbkdf2(password, salt.toString('base64'), config.crypto.workFactor, config.crypto.keylen, (err, key) => {
       cb(null, salt.toString('base64'), key.toString('base64'));
     });
-  })
-}
+  });
+};
 
 module.exports.passwordCheck = (password, derivedPassword, salt, work, cb) => {
   crypto.pbkdf2(password, salt, work, config.crypto.keylen, (err, key) => {
     cb(null, scmp(key.toString('base64'), derivedPassword));
   });
-}
+};

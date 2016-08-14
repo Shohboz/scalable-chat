@@ -41,7 +41,10 @@ passport.use(new local((username, password, done) => {
         }
       });
     } else {
-      log.debug({message: 'Wrong Username or Password', username: username});
+      log.debug({
+        message: 'Wrong Username or Password',
+        username: username
+      });
       done(null, false, {
         message: 'Wrong Username or Password'
       });
