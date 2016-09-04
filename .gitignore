@@ -3,3 +3,4 @@ node_modules
 dev_secret.env
 *.log
 logs
+assets/dist

@@ -1,0 +1,13 @@
+{
+  "presets": ["es2015", "stage-1", "react"],
+  "env": {
+    "dev": {
+      "presets": ["react-hmre"]
+    }
+  },
+  "plugins": [
+    [
+      "typecheck"
+    ]
+  ]
+}

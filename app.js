@@ -21,7 +21,8 @@ app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 
 app.use(log.logger);
-app.use(express.static(__dirname + '/static'));
+// app.use(express.static(__dirname + '/static'));
+app.use('/static', express.static(__dirname + '/assets/dist'));
 app.use(cookieParser(config.secret));
 
 app.use(session({
