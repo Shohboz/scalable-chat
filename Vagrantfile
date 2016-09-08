@@ -93,7 +93,7 @@ Vagrant.configure(2) do |config|
       su vagrant -
         cd /vagrant
   #      npm config set bin-links false
-        npm i -g webpack
+        npm i -g webpack grunt
         npm i --unsafe-perm --no-bin-links
 
   # => cd to app root on login

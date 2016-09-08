@@ -29,16 +29,16 @@ const TARGET = process.env.npm_lifecycle_event;
 process.env.BABEL_ENV = TARGET;
 
 module.exports = merge.smart({
-  // context: PATHS.src,
+  context: PATHS.src,
   entry: {
-    // src: ['./index']
-    src: PATHS.src
+    src: ['./index']
+    // src: PATHS.src
   },
   output: {
     path: PATHS.build,
     // publicPath: "/",
-    // filename: "bundle.[hash:8].js",
-    filename: "bundle.js",
+    filename: "bundle.[hash:8].js",
+    // filename: "bundle.js",
     chunkFilename: "chunk_[name].[chunkhash:6].js"
   },
   module: {

@@ -4,3 +4,4 @@ dev_secret.env
 *.log
 logs
 assets/dist
+views/prepared
