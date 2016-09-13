@@ -2,29 +2,26 @@
 
 const webpack = require('webpack');
 const merge = require('webpack-merge');
+const StringReplacePlugin = require('string-replace-webpack-plugin');
 const path = require('path');
 const configsPath = 'config/webpack';
+const TARGET = process.env.npm_lifecycle_event;
 
-const _configs = {
-  // Загружаем production, development конфиги
-  production: require(path.join(__dirname, configsPath, 'production')),
-  development: require(path.join(__dirname, configsPath, 'development'))
-};
-
-let config = ((environment) => {
-  // Проверяем существование конфига
-  if (!_configs[environment]) {
-    throw 'Can\'t find enviroments see _configs object';
-  }
-  // Возвращает загруженный конфиг согласно переменной окружения
-  return _configs[environment](__dirname);
-})(process.env.NODE_ENV);
+let env;
+switch (TARGET) {
+  case "assets":
+    env = 'development';
+    break
+  default:
+    env = 'production';
+    break
+}
+let config = require(path.join(__dirname, configsPath, env));
 
 const PATHS = {
   src: path.join(__dirname, 'assets/js'),
   build: path.join(__dirname, 'assets/dist')
 };
-const TARGET = process.env.npm_lifecycle_event;
 
 process.env.BABEL_ENV = TARGET;
 
@@ -59,6 +56,16 @@ module.exports = merge.smart({
         test: /\.js$/,
         loader: 'babel-loader',
         exclude: 'node_modules/*'
+      },
+      { 
+        test: /\.js$/,
+        loader: StringReplacePlugin.replace({
+          replacements: [
+            {
+              pattern: /<!-- @SOCKETIO_URL -->/ig,
+              replacement: (match, p1, offset, string) => process.env.SOCKETIO_URL.replace(/[\n\r]+/g, '')
+            }
+          ]})
       }
     ],
   },
@@ -69,7 +76,8 @@ module.exports = merge.smart({
       jQuery: 'jquery',
       $: 'jquery',
       'window.jQuery': 'jquery'
-    })
+    }),
+    new StringReplacePlugin()
   ],
 
   resolve: {
@@ -77,4 +85,4 @@ module.exports = merge.smart({
     extensions: [ '', '.js', '.jsx' ]
   }
 },
-config);
+config(__dirname));

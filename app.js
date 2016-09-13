@@ -27,12 +27,12 @@ app.use(cookieParser(config.secret));
 
 app.use(session({
   secret: config.secret,
-    saveUninitialized: true,
-    resave: true,
-    store: new RedisStore({
-      host: config.redisHost,
-      port: config.redisPort
-    })
+  saveUninitialized: true,
+  resave: true,
+  store: new RedisStore({
+    host: config.redisHost,
+    port: config.redisPort
+  })
 }));
 
 app.use(passport.passport.initialize());
