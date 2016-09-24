@@ -2,13 +2,13 @@
 
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 const PATHS = {
-  build: `${__dirname}/../../assets/dist`
+  root: `${__dirname}/../../assets`
 };
 
 module.exports = () => ({
 	plugins: [
 		new CleanWebpackPlugin('dist', {
-			root: PATHS.build,
+			root: PATHS.root,
 			verbose: true,
 			dry: false
 		})

@@ -7,5 +7,3 @@ fi
 
 . ./$1.env
 . ./$1_secret.env
-
-grunt

@@ -3,7 +3,7 @@ var path = require('path');
 module.exports = function(grunt){
 
   var config = {
-    src: 'assets/js',
+    src: 'assets/src/js',
     dist: 'assets/dist',
     static: 'static',
     dest: 'views/prepared'

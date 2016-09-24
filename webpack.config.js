@@ -19,7 +19,7 @@ switch (TARGET) {
 let config = require(path.join(__dirname, configsPath, env));
 
 const PATHS = {
-  src: path.join(__dirname, 'assets/js'),
+  src: path.join(__dirname, 'assets/src/js'),
   build: path.join(__dirname, 'assets/dist')
 };
 

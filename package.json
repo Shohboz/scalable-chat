@@ -7,7 +7,7 @@
     "start": "node index",
     "dev": "node index",
     "assets": "webpack",
-    "build": "webpack -p && ./server_prep.sh dev",
+    "build": "./server_prep.sh dev && webpack -p && grunt",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
