@@ -23,18 +23,20 @@ export let SocketListener = (noun, collection, socket) => {
 
 export let SocketSync = function (method, model, options) {
   let socket = Backbone.socket;
-  let create = function create(model, options, noun){
+  let create = function create(model, options, noun) {
     socket.emit('Add' + noun, model);
   };
-  let read = function read(model, options, noun){
+  let read = function read(model, options, noun) {
     socket.emit('Get' + noun, options);
   };
-  switch (method){
-    case 'create':
-      create(model, options, this.noun);
+  switch (method) {
+  case 'create':
+    create(model, options, this.noun);
     break;
-    case 'read':
-      read(model, options, this.noun);
+  case 'read':
+    read(model, options, this.noun);
+    break;
+  default:
     break;
   }
 };

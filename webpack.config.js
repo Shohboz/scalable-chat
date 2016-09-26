@@ -41,9 +41,10 @@ module.exports = merge.smart({
   module: {
     preLoaders: [
       {
-        test: /\.js$/,
-        exclude: /node_modules/,
-        loader: 'jshint-loader'
+        test: /\.jsx?$/,
+        loaders: ['eslint'],
+        exclude: 'node_modules/*',
+        include: PATHS.src
       }
     ],
     loaders: [
