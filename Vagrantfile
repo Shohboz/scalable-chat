@@ -23,7 +23,7 @@ Vagrant.configure(2) do |config|
   # within the machine from a port on the host machine. In the example below,
   # accessing "localhost:8080" will access port 80 on the guest machine.
   config.vm.network "forwarded_port", guest: 3000, host: 3000
-
+  config.vm.network "forwarded_port", guest: 8050, host: 8050
   config.vm.network "forwarded_port", guest: 15672, host: 15672
 
   # Create a private network, which allows host-only access to the machine
@@ -68,7 +68,6 @@ Vagrant.configure(2) do |config|
   # documentation for more information about their specific syntax and use.
   config.vm.provision "shell", inline: <<-SHELL
   #   sudo apt-get update
-  #   sudo apt-get install -y apache2
   # => Install node
       wget -q -O - https://deb.nodesource.com/setup_5.x | bash -
       apt-get dist-upgrade -y  < /dev/null
@@ -89,14 +88,12 @@ Vagrant.configure(2) do |config|
       echo "Installing dependancies..."
         apt-get install -y nodejs build-essential redis-server < /dev/null
 
-  # => 
       su vagrant -
         cd /vagrant
   #      npm config set bin-links false
-        npm i -g webpack grunt eslint eslint-plugin-react
+        npm i -g webpack grunt eslint eslint-plugin-react webpack-dev-server
         npm i --unsafe-perm --no-bin-links
 
-  # => cd to app root on login
         echo 'cd /vagrant' >> /etc/profile
       exit
   SHELL

@@ -18,7 +18,7 @@ module.exports = function(grunt){
     preprocess: {
       dist: {
         files: {
-          'views/prepared/header.pug': 'views/templates/header.pug'
+          'views/prepared/footer.pug': 'views/templates/footer.pug'
         }
       }
     },
@@ -33,7 +33,7 @@ module.exports = function(grunt){
           {
             expand: true,
             flatten: true,
-            src: path.join(config.dest, 'header.pug'),
+            src: path.join(config.dest, 'footer.pug'),
             dest: config.dest
           }
         ]

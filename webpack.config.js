@@ -39,25 +39,25 @@ module.exports = merge.smart({
     chunkFilename: "chunk_[name].[chunkhash:6].js"
   },
   module: {
-    preLoaders: [
-      {
-        test: /\.jsx?$/,
-        loaders: ['eslint'],
-        exclude: 'node_modules/*',
-        include: PATHS.src
-      }
-    ],
+    // preLoaders: [
+    //   {
+    //     test: /\.jsx?$/,
+    //     loaders: ['eslint'],
+    //     exclude: 'node_modules/*',
+    //     include: PATHS.src
+    //   }
+    // ],
     loaders: [
       {
         test: /\.jsx?$/,
         loaders: ['babel?cacheDirectory'],
         include: PATHS.src
       },
-      {
-        test: /\.js$/,
-        loader: 'babel-loader',
-        exclude: 'node_modules/*'
-      },
+      // {
+      //   test: /\.js$/,
+      //   loader: 'babel-loader',
+      //   exclude: 'node_modules/*'
+      // },
       { 
         test: /\.js$/,
         loader: StringReplacePlugin.replace({

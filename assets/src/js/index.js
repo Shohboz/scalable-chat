@@ -1,3 +1,1 @@
-import {App} from './application';
-
-new App('react-root');
+require('./application');
