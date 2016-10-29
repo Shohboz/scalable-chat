@@ -28,7 +28,7 @@ process.env.BABEL_ENV = TARGET;
 module.exports = merge.smart({
   context: PATHS.src,
   entry: {
-    src: ['./index']
+    src: ['bootstrap-loader', './index']
     // src: PATHS.src
   },
   output: {
@@ -52,6 +52,40 @@ module.exports = merge.smart({
         test: /\.jsx?$/,
         loaders: ['babel?cacheDirectory'],
         include: PATHS.src
+      },
+      {
+        test: /\.(png|jpg|svg)?(\?v=\d+.\d+.\d+)?$/,
+        loader: "url",
+        query: {
+          name: 'assets/images/[name].[ext]',
+          limit: 8192
+        }
+      },
+      {
+        test: /\.woff(2)?(\?v=\d+.\d+.\d+)?$/,
+        loader: "url",
+        query: {
+          name: 'assets/fonts/[name]-[hash:6].[ext]',
+          limit: 10000,
+          mimetype: 'application/font-woff'
+        }
+      },
+      {
+        test: /\.(eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url",
+        query: {
+          name: 'assets/fonts/[name]-[hash:6].[ext]',
+          limit: 10000
+        }
+      },
+      {
+        test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
+        loader: "url",
+        query: {
+          name: 'assets/fonts/[name]-[hash:6].[ext]',
+          limit: 10000,
+          mimetype: 'image/svg+xml'
+        }
       },
       // {
       //   test: /\.js$/,
@@ -82,8 +116,8 @@ module.exports = merge.smart({
   ],
 
   resolve: {
-    modulesDirectories: [ 'node_modules', PATHS.src ],
-    extensions: [ '', '.js', '.jsx' ]
+    modulesDirectories: ['node_modules', PATHS.src],
+    extensions: ['', '.js', '.jsx']
   }
 },
 config(__dirname));
