@@ -1,6 +1,6 @@
 import {Model, Collection} from 'backbone';
 import {map} from 'underscore';
-import {md5} from 'blueimp-md5';
+import md5 from 'md5';
 
 export let User = Model.extend({
   image: function (size) {
@@ -14,7 +14,7 @@ export let User = Model.extend({
     }
   },
   gravatar: function (size) {
-    return '';//`http://gravatar.com/avatar/${md5(this.get('id'))}?d=retro&s=${size}`;
+    return `http://gravatar.com/avatar/${md5(this.get('id'))}?d=retro&s=${size}`;
   },
   facebook: function (size) {
     return `http://graph.facebook.com/${this.get('id')}/picture/?height=${size}`;

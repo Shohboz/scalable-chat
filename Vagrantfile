@@ -91,7 +91,7 @@ Vagrant.configure(2) do |config|
       su vagrant -
         cd /vagrant
   #      npm config set bin-links false
-        npm i -g webpack grunt eslint eslint-plugin-react webpack-dev-server
+        npm i -g webpack grunt eslint eslint-plugin-react
         npm i --unsafe-perm --no-bin-links
 
         echo 'cd /vagrant' >> /etc/profile

@@ -12,7 +12,6 @@ export let RoomForm = React.createClass({
     this.props.rooms.off('add change remove', this._boundForceUpdate);
   },
   joinRoomHandler: function () {
-    console.info('joinRoomHandler ', ReactDOM.findDOMNode(this.refs.roomName).value);
     this.channel.publish('Room.Join', {roomName: ReactDOM.findDOMNode(this.refs.roomName).value});
   },
   render: function () {
@@ -25,7 +24,6 @@ export let RoomForm = React.createClass({
         </button>
         <ul>
         {this.props.rooms.map(function (r, i) {
-          console.info('r ', r);
           return (<li key={i} className="list-unstyled">
             <a href={'#room/' + r.get('id')}>{r.get('id')}</a>
           </li>);

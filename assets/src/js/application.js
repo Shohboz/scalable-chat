@@ -10,7 +10,6 @@ import {RoomForm} from './components/room';
 import {ChatView} from './components/chat';
 import {User} from './entities/models';
 import React from 'react';
-import $ from 'jquery';
 
 let me = null;
 let connected = false;
@@ -18,9 +17,7 @@ let router;
 let roomCollection;
 let userCollection;
 let chatCollection;
-
-let el = 'react-root';
-let $root = $(`#${el}`).first();
+let $root = document.querySelector('#react-root');
 let socket = io.connect('<!-- @SOCKETIO_URL -->');
 
 function roomSelection() {
@@ -45,7 +42,6 @@ function defaultRoute() {
 }
 
 let roomFormEvent = (message) => {
-  console.warn('message ', message);
   roomCollection.add({
     name: message.roomName,
     id: message.rootName

@@ -7,7 +7,6 @@ export let ChatList = React.createClass({
     return (
       <ul className="list-unstyled">
       {this.props.chats.map(function(chat) {
-        console.warn('chat ', chat);
         return (
           <ChatMessage chat={chat} me={me} />
         );
