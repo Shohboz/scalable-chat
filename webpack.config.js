@@ -28,7 +28,8 @@ process.env.BABEL_ENV = TARGET;
 module.exports = merge.smart({
   context: PATHS.src,
   entry: {
-    src: ['bootstrap-loader', './index']
+    src: ['./index'],
+    vendor: 'bootstrap-loader'
     // src: PATHS.src
   },
   output: {
@@ -111,6 +112,10 @@ module.exports = merge.smart({
       jQuery: 'jquery',
       $: 'jquery',
       'window.jQuery': 'jquery'
+    }),
+    new webpack.optimize.CommonsChunkPlugin({
+      name: 'vendor',
+      filename: 'vendor.js'
     }),
     new StringReplacePlugin()
   ],
