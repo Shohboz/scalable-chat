@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node index",
+    "start": "node lib/index",
     "assets": "webpack --progress --colors && grunt",
     "build": "webpack --progress --colors -p && grunt",
     "lint": "./node_modules/.bin/eslint .",

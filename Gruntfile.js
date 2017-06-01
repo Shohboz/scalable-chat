@@ -6,7 +6,7 @@ module.exports = function(grunt){
     src: 'assets/src/js',
     dist: 'assets/dist',
     static: 'static',
-    dest: 'views/prepared'
+    dest: 'lib/views/prepared'
   };
 
   grunt.initConfig({
@@ -19,8 +19,8 @@ module.exports = function(grunt){
     preprocess: {
       dist: {
         files: {
-          'views/prepared/footer.pug': 'views/templates/footer.pug',
-          'views/prepared/header.pug': 'views/templates/header.pug'
+          'lib/views/prepared/footer.pug': 'lib/views/templates/footer.pug',
+          'lib/views/prepared/header.pug': 'lib/views/templates/header.pug'
         }
       }
     },
