@@ -1,7 +1,7 @@
-import {findDOMNode} from 'react-dom';
-import {UserView} from './user';
-import postal from 'postal';
-import React from 'react';
+import { findDOMNode } from "react-dom";
+import UserView from "./User";
+import postal from "postal";
+import React from "react";
 
 export let ChatForm = React.createClass({
   componentWillMount: function() {
@@ -10,12 +10,12 @@ export let ChatForm = React.createClass({
   formSubmit: function(e) {
     e.preventDefault();
     let message = findDOMNode(this.refs.message).value;
-    if (message !== '') {
-      this.channel.publish('Chat.Add', {message: message})
-      findDOMNode(this.refs.message).value = '';
-      findDOMNode(this.refs.message).placeholder = '';
+    if (message !== "") {
+      this.channel.publish("Chat.Add", { message: message });
+      findDOMNode(this.refs.message).value = "";
+      findDOMNode(this.refs.message).placeholder = "";
     } else {
-      findDOMNode(this.refs.message).placeholder = 'Please enter a message';
+      findDOMNode(this.refs.message).placeholder = "Please enter a message";
     }
   },
   render: function() {
