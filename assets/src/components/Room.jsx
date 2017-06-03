@@ -1,22 +1,25 @@
-import React from "react";
+import React, { Component } from "react";
 import postal from "postal";
 import ReactDOM from "react-dom";
 
-export let RoomForm = React.createClass({
-  componentWillMount: function() {
+export default class extends Component {
+  componentWillMount() {
     this.channel = postal.channel();
     this._boundForceUpdate = this.forceUpdate.bind(this, null);
     this.props.rooms.on("add change remove", this._boundForceUpdate, this);
-  },
-  componentWillUnmount: function() {
+  }
+
+  componentWillUnmount() {
     this.props.rooms.off("add change remove", this._boundForceUpdate);
-  },
-  joinRoomHandler: function() {
+  }
+
+  joinRoomHandler = () => {
     this.channel.publish("Room.Join", {
       roomName: ReactDOM.findDOMNode(this.refs.roomName).value
     });
-  },
-  render: function() {
+  };
+
+  render() {
     return (
       <div className="col-sm-8 col-sm-offset-2">
         <h2>Please select the room</h2>
@@ -33,10 +36,10 @@ export let RoomForm = React.createClass({
           Join Room
         </button>
         <ul>
-          {this.props.rooms.map(function(r, i) {
+          {this.props.rooms.map((room, idx) => {
             return (
-              <li key={i} className="list-unstyled">
-                <a href={"#room/" + r.get("id")}>{r.get("id")}</a>
+              <li key={idx} className="list-unstyled">
+                <a href={"#room/" + room.get("id")}>{room.get("id")}</a>
               </li>
             );
           })}
@@ -44,4 +47,4 @@ export let RoomForm = React.createClass({
       </div>
     );
   }
-});
+}

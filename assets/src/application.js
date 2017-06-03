@@ -10,8 +10,8 @@ import {
 } from "./entities/models";
 import postal from "postal";
 import ReactDOM from "react-dom";
-import { RoomForm } from "./components/Room";
-import { ChatView } from "./components/Chat";
+import RoomForm from "./components/Room";
+import ChatView from "./components/Chat";
 import { User } from "./entities/models";
 import React from "react";
 

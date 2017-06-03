@@ -1,31 +1,28 @@
-import React from "react";
+import React, { Component } from "react";
 import UserView from "./User";
 import moment from "moment";
 
-const ChatMessage = React.createClass({
-  render: function() {
-    let pull;
-    if (this.props.me.id === this.props.chat.get("user").id) {
-      pull = "pull-right";
-    } else {
-      pull = "pull-left";
-    }
-    let timeAgo = moment(this.props.chat.get("ts")).fromNow();
-    return (
-      <li>
-        <div className={"bg-primary chat-message " + pull}>
-          {this.props.chat.get("message")}
-        </div>
-        <div className="clearfix" />
-        <div className={pull}>
-          <UserView user={this.props.chat.get("user")} size={20} useName={true}>
-            <small>{timeAgo}</small>
-          </UserView>
-        </div>
-        <div className="clearfix" />
-      </li>
-    );
-  }
-});
+const Message = ({ chat, styles: { pull }, time }) => (
+  <li>
+    <div className={"bg-primary chat-message " + pull}>
+      {chat.get("message")}
+    </div>
+    <div className="clearfix" />
+    <div className={pull}>
+      <UserView user={chat.get("user")} size={20} useName={true}>
+        <small>{time}</small>
+      </UserView>
+    </div>
+    <div className="clearfix" />
+  </li>
+);
 
-export { ChatMessage as default, ChatMessage };
+export default class extends Component {
+  render() {
+    let pull = this.props.me.id === this.props.chat.get("user").id
+      ? "pull-right"
+      : "pull-left";
+    let timeAgo = moment(this.props.chat.get("ts")).fromNow();
+    return <Message chat={this.props.chat} time={timeAgo} styles={{ pull }} />;
+  }
+}

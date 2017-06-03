@@ -1,13 +1,14 @@
 import { findDOMNode } from "react-dom";
 import UserView from "./User";
 import postal from "postal";
-import React from "react";
+import React, { Component } from "react";
 
-export let ChatForm = React.createClass({
-  componentWillMount: function() {
+export default class extends Component {
+  componentWillMount() {
     this.channel = postal.channel();
-  },
-  formSubmit: function(e) {
+  }
+
+  formSubmit = e => {
     e.preventDefault();
     let message = findDOMNode(this.refs.message).value;
     if (message !== "") {
@@ -17,8 +18,9 @@ export let ChatForm = React.createClass({
     } else {
       findDOMNode(this.refs.message).placeholder = "Please enter a message";
     }
-  },
-  render: function() {
+  };
+
+  render() {
     return (
       <div className="row">
         <form onSubmit={this.formSubmit}>
@@ -35,4 +37,4 @@ export let ChatForm = React.createClass({
       </div>
     );
   }
-});
+}

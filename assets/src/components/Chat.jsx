@@ -1,34 +1,38 @@
-import React from "react";
+import React, { Component } from "react";
 import { findDOMNode } from "react-dom";
 import postal from "postal";
 import ChatList from "./Chats";
 import UserList from "./Users";
-import { ChatForm } from "./Form";
+import ChatForm from "./Form";
 
-export let ChatView = React.createClass({
-  componentWillMount: function() {
+export default class extends Component {
+  componentWillMount() {
     let channel = postal.channel();
     this._boundForceUpdate = this.forceUpdate.bind(this, null);
     this.props.chats.on("add change remove", this._boundForceUpdate, this);
     this.props.users.on("add change remove", this._boundForceUpdate, this);
     this.chatSub = channel.subscribe("Chat.Add", this.chatAdd);
-  },
-  componentWillUnmount: function() {
+  }
+
+  componentWillUnmount() {
     this.props.chats.off("add change remove", this._boundForceUpdate);
     this.props.users.off("add change remove", this._boundForceUpdate);
     this.chatSub.unsubscribe();
-  },
-  componentDidUpdate: function() {
+  }
+
+  componentDidUpdate() {
     let chatList = findDOMNode(this.refs.chatList);
     chatList.scrollTop = chatList.scrollHeight;
-  },
-  chatAdd: function(data) {
+  }
+
+  chatAdd = data => {
     this.props.chats.sync("create", {
       message: data.message,
       room: this.props.room
     });
-  },
-  render: function() {
+  };
+
+  render() {
     return (
       <div className="row">
         <div className="row">
@@ -43,4 +47,4 @@ export let ChatView = React.createClass({
       </div>
     );
   }
-});
+}
