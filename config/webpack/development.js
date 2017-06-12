@@ -1,24 +1,23 @@
-'use strict';
+"use strict";
 
-const CleanWebpackPlugin = require('clean-webpack-plugin');
-const path = require('path');
-const base = `${__dirname}/../../assets/`;
-const PATHS = {
-  root: base,
-  build: path.join(base, 'dist'),
-};
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 
-module.exports = () => ({
-  devtool: 'source-map',
-  output: {
-    path: PATHS.build,
-    filename: "bundle.js"
-  },
-  plugins: [
-    new CleanWebpackPlugin('dist', {
-      root: PATHS.root,
-      verbose: true,
-      dry: false
-    })
-  ]
-});
+module.exports = () =>
+  require("webpack-merge").smart({
+    devtool: "source-map",
+    devServer: {
+      host: "localhost",
+      port: 8080,
+      historyApiFallback: true,
+      watchOptions: {
+        aggregateTimeout: 300,
+        poll: 1000
+      }
+    },
+    plugins: [
+      new ExtractTextPlugin({
+        filename: "style/bundle.[chunkhash:6].css",
+        allChunks: true
+      })
+    ]
+  });

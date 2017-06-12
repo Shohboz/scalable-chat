@@ -1,10 +1,12 @@
 "use strict";
 
 const webpack = require("webpack");
-const merge = require("webpack-merge");
 const StringReplacePlugin = require("string-replace-webpack-plugin");
+const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require("path");
 const configsPath = "config/webpack";
+const AssetsConfigPlugin = require("./plugins/webpack.assets")
+  .AssetsConfigPlugin;
 const TARGET = process.env.npm_lifecycle_event;
 
 let env;
@@ -16,87 +18,64 @@ switch (TARGET) {
     env = "production";
     break;
 }
-let config = require(path.join(__dirname, configsPath, env));
 
 const PATHS = {
   src: path.join(__dirname, "assets/src"),
-  build: path.join(__dirname, "assets/dist")
+  build: path.join(__dirname, "static")
 };
 
 process.env.BABEL_ENV = TARGET;
 
-module.exports = merge.smart(
+module.exports = require("webpack-merge").smart(
   {
     context: PATHS.src,
     entry: {
-      src: ["./index"],
+      src: ["index"],
       vendor: "bootstrap-loader"
-      // src: PATHS.src
     },
     output: {
       path: PATHS.build,
-      // publicPath: "/",
+      publicPath: "/",
       filename: "bundle.[hash:8].js",
       // filename: "bundle.js",
       chunkFilename: "chunk_[name].[chunkhash:6].js"
     },
     module: {
-      // preLoaders: [
-      //   {
-      //     test: /\.jsx?$/,
-      //     loaders: ['eslint'],
-      //     exclude: 'node_modules/*',
-      //     include: PATHS.src
-      //   }
-      // ],
-      loaders: [
+      rules: [
         {
-          test: /\.jsx?$/,
-          loaders: ["babel?cacheDirectory"],
-          include: PATHS.src
-        },
-        {
-          test: /\.(png|jpg|svg)?(\?v=\d+.\d+.\d+)?$/,
-          loader: "url",
-          query: {
-            name: "assets/images/[name].[ext]",
-            limit: 8192
+          test: /\.(png|jpg|jpeg)$/,
+          use: {
+            loader: "url-loader"
           }
         },
         {
-          test: /\.woff(2)?(\?v=\d+.\d+.\d+)?$/,
-          loader: "url",
-          query: {
-            name: "assets/fonts/[name]-[hash:6].[ext]",
-            limit: 10000,
-            mimetype: "application/font-woff"
-          }
+          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
+          use: [
+            {
+              loader: "file-loader",
+              options: {
+                publicPath: "/static/"
+              }
+            }
+          ]
         },
         {
-          test: /\.(eot|ttf)(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url",
-          query: {
-            name: "assets/fonts/[name]-[hash:6].[ext]",
-            limit: 10000
-          }
+          test: /\.css$|\.scss$/,
+          use: ExtractTextPlugin.extract({
+            fallback: "style-loader",
+            use: ["css-loader", "sass-loader"]
+          })
         },
         {
-          test: /\.svg(\?v=\d+\.\d+\.\d+)?$/,
-          loader: "url",
-          query: {
-            name: "assets/fonts/[name]-[hash:6].[ext]",
-            limit: 10000,
-            mimetype: "image/svg+xml"
-          }
+          test: /\.(js|jsx)$/,
+          use: {
+            loader: "babel-loader"
+          },
+          exclude: path.join(__dirname, "node_modules/*")
         },
-        // {
-        //   test: /\.js$/,
-        //   loader: 'babel-loader',
-        //   exclude: 'node_modules/*'
-        // },
         {
           test: /\.js$/,
-          loader: StringReplacePlugin.replace({
+          use: StringReplacePlugin.replace({
             replacements: [
               {
                 pattern: /<!-- @SOCKETIO_URL -->/gi,
@@ -124,9 +103,12 @@ module.exports = merge.smart(
     ],
 
     resolve: {
-      modulesDirectories: ["node_modules", PATHS.src],
-      extensions: ["", ".js", ".jsx"]
+      modules: ["node_modules", PATHS.src],
+      extensions: [".js", ".jsx"]
     }
   },
-  config(__dirname)
+  require(path.join(__dirname, configsPath, env))(__dirname),
+  {
+    plugins: [AssetsConfigPlugin()]
+  }
 );
