@@ -8,6 +8,7 @@ module.exports = ({ routes, user, title, children, isAuthenticated }) => (
       <title>
         {title}
       </title>
+      <script src={"/static/vendor.js"} />
     </head>
     <body>
       <div className="container">

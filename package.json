@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node lib/index",
+    "server:dev": "nodemon lib/index.js --watch lib/ --ignore lib/shared/ --exec babel-node",
     "assets": "webpack-dev-server --progress --color",
     "build": "webpack --progress --colors -p && grunt",
     "lint": "./node_modules/.bin/eslint .",
@@ -70,6 +71,7 @@
     "grunt-preprocess": "^5.1.0",
     "grunt-replace": "^1.0.1",
     "node-sass": "^3.10.1",
+    "nodemon": "^1.11.0",
     "resolve-url-loader": "^2.0.2",
     "sass-loader": "^6.0.5",
     "string-replace-webpack-plugin": "0.0.3",
