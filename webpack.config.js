@@ -78,7 +78,7 @@ module.exports = require("webpack-merge").smart(
           use: {
             loader: "babel-loader"
           },
-          exclude: path.join(__dirname, "node_modules/*")
+          exclude: /node_modules/
         },
         {
           test: /\.js$/,
