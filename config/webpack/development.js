@@ -8,6 +8,7 @@ module.exports = () =>
     devServer: {
       host: "localhost",
       port: 8080,
+      disableHostCheck: true,
       historyApiFallback: true,
       watchOptions: {
         aggregateTimeout: 300,

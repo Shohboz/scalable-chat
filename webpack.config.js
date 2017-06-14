@@ -20,8 +20,8 @@ switch (TARGET) {
 }
 
 const PATHS = {
-  src: path.join(__dirname, "assets/src"),
-  build: path.join(__dirname, "static")
+  src: path.resolve(__dirname, "assets/src"),
+  build: path.resolve(__dirname, "static")
 };
 
 process.env.BABEL_ENV = TARGET;
@@ -37,7 +37,6 @@ module.exports = require("webpack-merge").smart(
       path: PATHS.build,
       publicPath: "/",
       filename: "bundle.[hash:8].js",
-      // filename: "bundle.js",
       chunkFilename: "chunk_[name].[chunkhash:6].js"
     },
     module: {
@@ -54,6 +53,7 @@ module.exports = require("webpack-merge").smart(
             {
               loader: "file-loader",
               options: {
+                outputPath: "/fonts/",
                 publicPath: "/static/"
               }
             }
@@ -63,7 +63,14 @@ module.exports = require("webpack-merge").smart(
           test: /\.css$|\.scss$/,
           use: ExtractTextPlugin.extract({
             fallback: "style-loader",
-            use: ["css-loader", "sass-loader"]
+            use: [
+              {
+                loader: "css-loader"
+              },
+              {
+                loader: "sass-loader"
+              }
+            ]
           })
         },
         {
@@ -97,7 +104,8 @@ module.exports = require("webpack-merge").smart(
       }),
       new webpack.optimize.CommonsChunkPlugin({
         name: "vendor",
-        filename: "vendor.js"
+        filename: "vendor.js",
+        minChunks: Infinity
       }),
       new StringReplacePlugin()
     ],
