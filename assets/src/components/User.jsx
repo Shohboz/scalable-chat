@@ -1,12 +1,20 @@
-import React from "react";
+import React, { Component } from "react";
 
-export default ({ size, user }) => (
+const UserView = ({ size, user, name }) => (
   <div className="row">
     <img
       src={user.image(size)}
       className="img-circle"
       title={user.get("user")}
     />
-    <span>{user.get("user")}</span>
+    <span>{name}</span>
   </div>
 );
+
+export default class extends Component {
+  render() {
+    const { size, useName, user } = this.props;
+    let name = useName ? user.get("user") : null;
+    return <UserView name={name} size={size} user={user} />;
+  }
+}

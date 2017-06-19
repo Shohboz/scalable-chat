@@ -5,4 +5,4 @@ dev_secret.env
 logs
 assets/dist
 views/prepared
-assets.config.js
+assets.config.*

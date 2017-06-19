@@ -12,7 +12,7 @@ export default class extends Component {
     e.preventDefault();
     let message = findDOMNode(this.refs.message).value;
     if (message !== "") {
-      this.channel.publish("Chat.Add", { message: message });
+      this.channel.publish("Chat.Add", { message });
       findDOMNode(this.refs.message).value = "";
       findDOMNode(this.refs.message).placeholder = "";
     } else {

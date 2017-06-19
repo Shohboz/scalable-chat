@@ -26,24 +26,26 @@ export default class extends Component {
   }
 
   chatAdd = data => {
-    this.props.chats.sync("create", {
+    const { room, chats } = this.props;
+    chats.sync("create", {
       message: data.message,
-      room: this.props.room
+      room
     });
   };
 
   render() {
+    const { me, users, chats } = this.props;
     return (
       <div className="row">
         <div className="row">
           <div className="col-sm-2">
-            <UserList collection={this.props.users} me={this.props.me} />
+            <UserList collection={users} me={me} />
           </div>
           <div className="col-sm-8 chat-list" ref="chatList">
-            <ChatList chats={this.props.chats} me={this.props.me} />
+            <ChatList chats={chats} me={me} />
           </div>
         </div>
-        <ChatForm me={this.props.me} />
+        <ChatForm me={me} />
       </div>
     );
   }
