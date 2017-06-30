@@ -1,7 +1,7 @@
 import io from "socket.io-client";
 import { history } from "backbone";
 import Backbone from "backbone";
-import { Router } from "./router";
+import Router from "./router";
 import { SocketSync, SocketListener } from "./helpers/socket";
 import {
   RoomCollection,

@@ -1,9 +1,11 @@
 import { Router as AppRouter } from "backbone";
 
-export let Router = AppRouter.extend({
+const Router = AppRouter.extend({
   routes: {
     "": "RoomSelection",
     "room/:room": "JoinRoom",
     "*default": "Default"
   }
 });
+
+export default Router;
