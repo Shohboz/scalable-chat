@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node lib/index",
-    "server:dev": "nodemon lib/index.js --watch lib/ --ignore lib/shared/ --exec babel-node",
+    "server:dev": "nodemon lib/index.js --watch lib/* --watch assets.config.js --ignore assets/ --exec babel-node",
     "assets": "webpack-dev-server --progress --color",
     "build": "webpack --progress --colors -p && grunt",
     "lint": "./node_modules/.bin/eslint .",
