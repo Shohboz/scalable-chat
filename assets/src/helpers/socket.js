@@ -1,6 +1,11 @@
 import Backbone from "backbone";
+import {
+  RoomCollection,
+  UserCollection,
+  ChatCollection
+} from "../entities/models";
 
-export let SocketListener = (noun, collection, socket) => {
+const SocketListener = (noun, collection, socket) => {
   let addModels = models => {
     collection.add(collection.parse(models));
   };
@@ -17,26 +22,40 @@ export let SocketListener = (noun, collection, socket) => {
     socket.removeListener("Remove" + noun, removeModels);
   };
   return {
-    destroy: destroy
+    destroy
   };
 };
 
-export let SocketSync = function(method, model, options) {
+const SocketSync = function(method, model, options) {
   let socket = Backbone.socket;
-  let create = function create(model, options, noun) {
-    socket.emit("Add" + noun, model);
-  };
-  let read = function read(model, options, noun) {
-    socket.emit("Get" + noun, options);
-  };
   switch (method) {
     case "create":
-      create(model, options, this.noun);
+      socket.emit("Add" + this.noun, model);
       break;
     case "read":
-      read(model, options, this.noun);
+      socket.emit("Get" + this.noun, options);
       break;
     default:
       break;
   }
 };
+
+const initializeCollections = socket => {
+  Backbone.socket = socket;
+  Backbone.sync = SocketSync;
+
+  let roomCollection = new RoomCollection();
+  let userCollection = new UserCollection();
+  let chatCollection = new ChatCollection();
+  roomCollection.noun = "Room";
+  userCollection.noun = "User";
+  chatCollection.noun = "Chat";
+
+  return {
+    roomCollection,
+    userCollection,
+    chatCollection
+  };
+};
+
+export { initializeCollections, SocketSync, SocketListener };
