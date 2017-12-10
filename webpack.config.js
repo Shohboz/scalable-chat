@@ -1,113 +1,62 @@
-"use strict";
-
 const webpack = require("webpack");
-const StringReplacePlugin = require("string-replace-webpack-plugin");
 const ExtractTextPlugin = require("extract-text-webpack-plugin");
 const path = require("path");
-const configsPath = "config/webpack";
-const AssetsConfigPlugin = require("./plugins/webpack.assets")
-  .AssetsConfigPlugin;
-const TARGET = process.env.npm_lifecycle_event;
-
-let env;
-switch (TARGET) {
-  case "assets":
-    env = "development";
-    break;
-  default:
-    env = "production";
-    break;
-}
+const parts = require("./webpack.parts");
+const CONFIG_PATH = "config/webpack";
 
 const PATHS = {
   src: path.resolve(__dirname, "assets/src"),
   build: path.resolve(__dirname, "static")
 };
 
+const TARGET = process.env.npm_lifecycle_event;
 process.env.BABEL_ENV = TARGET;
 
+const environment = (target => {
+  switch (target) {
+    case "test":
+      return "test";
+    case "build:client":
+      return "production";
+    default:
+      return "development";
+  }
+})(TARGET);
+
 module.exports = require("webpack-merge").smart(
+  parts.babelLoader(),
+  parts.styleLoader(),
+  // parts.eslintLoader(),
+  parts.fontLoader({
+    outputPath: "/fonts/",
+    publicPath: "/static/"
+  }),
+  parts.loadImages(),
   {
     context: PATHS.src,
+
     entry: {
-      src: ["index"],
-      vendor: "bootstrap-loader"
+      src: ["index"]
     },
+
     output: {
       path: PATHS.build,
       publicPath: "/",
       filename: "bundle.[hash:8].js",
       chunkFilename: "chunk_[name].[chunkhash:6].js"
     },
-    module: {
-      rules: [
-        {
-          test: /\.(png|jpg|jpeg)$/,
-          use: {
-            loader: "url-loader"
-          }
-        },
-        {
-          test: /\.woff2?$|\.ttf$|\.eot$|\.svg$/,
-          use: [
-            {
-              loader: "file-loader",
-              options: {
-                outputPath: "/fonts/",
-                publicPath: "/static/"
-              }
-            }
-          ]
-        },
-        {
-          test: /\.css$|\.scss$/,
-          use: ExtractTextPlugin.extract({
-            fallback: "style-loader",
-            use: [
-              {
-                loader: "css-loader"
-              },
-              {
-                loader: "sass-loader"
-              }
-            ]
-          })
-        },
-        {
-          test: /\.(js|jsx)$/,
-          use: {
-            loader: "babel-loader"
-          },
-          exclude: /node_modules/
-        },
-        {
-          test: /\.js$/,
-          use: StringReplacePlugin.replace({
-            replacements: [
-              {
-                pattern: /<!-- @SOCKETIO_URL -->/gi,
-                replacement: (match, p1, offset, string) =>
-                  process.env.SOCKETIO_URL.replace(/[\n\r]+/g, "")
-              }
-            ]
-          })
-        }
-      ]
-    },
 
     plugins: [
-      // Делаем переменную jQuery видимой в каждом модуле
       new webpack.ProvidePlugin({
         jQuery: "jquery",
         $: "jquery",
         "window.jQuery": "jquery"
       }),
-      new webpack.optimize.CommonsChunkPlugin({
-        name: "vendor",
-        filename: "vendor.js",
-        minChunks: Infinity
+      new ExtractTextPlugin({
+        filename: "bundle.[hash:8].css",
+        allChunks: true
       }),
-      new StringReplacePlugin()
+      parts.generateAssetsConfig()
     ],
 
     resolve: {
@@ -115,8 +64,5 @@ module.exports = require("webpack-merge").smart(
       extensions: [".js", ".jsx"]
     }
   },
-  require(path.join(__dirname, configsPath, env))(__dirname),
-  {
-    plugins: [AssetsConfigPlugin()]
-  }
+  require(path.join(__dirname, CONFIG_PATH, environment))(__dirname)
 );
